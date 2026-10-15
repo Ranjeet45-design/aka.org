@@ -1,0 +1,383 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens — derived from the AKA logo (saffron + globe blue) and */
+/* the existing site palette (#F97316, #1E3A8A, #FFEDD5).               */
+/* ------------------------------------------------------------------ */
+:root {
+  --primary: #f97316; /* saffron — logo ring & flags */
+  --primary-deep: #c2410c; /* accessible saffron for text on light */
+  --secondary: #1e3a8a; /* royal blue — existing brand blue */
+  --ink: #0a1630; /* deepest navy, used as the "black" */
+  --accent: #fb923c;
+  --background: #fffaf3;
+  --surface: #fff1df;
+  --text: #0a1630;
+  --muted: #5b6577;
+  --line: rgb(10 22 48 / 0.12);
+  --header-h: 5rem;
+}
+
+/* Same condition the Aims section uses to enable its pinned GSAP scroll */
+@custom-variant pin (@media (min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference));
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-deep: var(--primary-deep);
+  --color-secondary: var(--secondary);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --font-display: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--background);
+  color: var(--text);
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Typography                                                          */
+/* ------------------------------------------------------------------ */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.75rem, 9.2vw, 8.75rem);
+  letter-spacing: -0.045em;
+  line-height: 0.96;
+}
+/* Page-hero title: slightly smaller so long titles stay within ~3 lines */
+.display-hero {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 7.4vw, 7rem);
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+.display-lg {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.25rem, 6vw, 5.5rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.display-md {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 2.6vw, 3.25rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.gutter {
+  padding-inline: clamp(1.25rem, 4.5vw, 4.5rem);
+}
+.section-y {
+  padding-block: clamp(5rem, 11vw, 11rem);
+}
+
+/* ------------------------------------------------------------------ */
+/* Reveal: a short, subtle fade-up, triggered before the element enters */
+/* the viewport (see Reveal.tsx) so content never appears to wait.      */
+/* ------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 0.75rem), 0);
+  transition:
+    opacity 0.45s ease-out,
+    transform 0.45s ease-out;
+}
+.reveal[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+/* Already on screen at load: shown immediately, no transition */
+.reveal[data-in="instant"] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+/* Headlines are always visible (no masked word-by-word reveal) */
+.words .w {
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                                */
+/* ------------------------------------------------------------------ */
+@keyframes kenburns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.14) translate3d(-1.5%, -1%, 0);
+  }
+}
+.kenburns {
+  animation: kenburns 28s var(--ease-expo) both alternate infinite;
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  animation: scroll-cue 2.2s var(--ease-expo) infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Marquee                                                             */
+/* ------------------------------------------------------------------ */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee 40s linear infinite;
+}
+
+/* Pause marquee on hover */
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+/* ------------------------------------------------------------------ */
+/* Scroll-driven effects (progressive enhancement — no JS)             */
+/* ------------------------------------------------------------------ */
+@supports (animation-timeline: view()) {
+  @keyframes parallax-y {
+    from {
+      transform: translate3d(0, -9%, 0) scale(1.18);
+    }
+    to {
+      transform: translate3d(0, 9%, 0) scale(1.18);
+    }
+  }
+  .parallax {
+    animation: parallax-y linear both;
+    animation-timeline: view();
+  }
+
+  @keyframes hero-drift {
+    to {
+      transform: translate3d(0, 14vh, 0);
+      opacity: 0.15;
+    }
+  }
+  .hero-drift {
+    animation: hero-drift linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 90vh;
+  }
+
+  @keyframes progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  .scroll-progress {
+    transform: scaleX(0);
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Links & buttons                                                     */
+/* ------------------------------------------------------------------ */
+.u-link {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.6s var(--ease-expo);
+}
+.u-link:hover,
+.u-link:focus-visible {
+  background-size: 100% 1px;
+}
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 999px;
+  padding: 1.05rem 1.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    color 0.5s var(--ease-expo),
+    border-color 0.5s var(--ease-expo);
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-hover);
+  transform: translate3d(0, 101%, 0);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  transition:
+    transform 0.6s var(--ease-expo),
+    border-radius 0.6s var(--ease-expo);
+}
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: none;
+  border-radius: 0;
+}
+.btn .arrow {
+  transition: transform 0.5s var(--ease-expo);
+}
+.btn:hover .arrow {
+  transform: translateX(0.3rem);
+}
+.btn-solid {
+  background: var(--primary);
+  color: var(--ink);
+  --btn-hover: #fff;
+}
+.btn-ghost-light {
+  border: 1px solid rgb(255 255 255 / 0.4);
+  color: #fff;
+  --btn-hover: #fff;
+}
+.btn-ghost-light:hover {
+  color: var(--ink);
+  border-color: #fff;
+}
+.btn-dark {
+  background: var(--ink);
+  color: #fff;
+  --btn-hover: var(--primary);
+}
+.btn-dark:hover {
+  color: var(--ink);
+}
+.btn-outline {
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  --btn-hover: var(--ink);
+}
+.btn-outline:hover {
+  color: #fff;
+}
+
+/* Mobile-only focal point for cover images (see <Photo positionMobile>) */
+@media (max-width: 767px) {
+  .pos-m {
+    object-position: var(--pos-m) !important;
+  }
+}
+
+/* Hover image zoom */
+.zoom-img img {
+  transition: transform 1.4s var(--ease-expo);
+}
+.zoom:hover .zoom-img img,
+.zoom:focus-visible .zoom-img img {
+  transform: scale(1.06);
+}
+
+/* Subtle grain on dark sections */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* Horizontal aims: hide scrollbar on the mobile snap carousel */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}

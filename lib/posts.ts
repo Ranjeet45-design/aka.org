@@ -10,22 +10,18 @@ export type Post = {
   date: string; // ISO yyyy-mm-dd — matches the original WordPress permalink date
   title: string;
   excerpt: string;
-  author: string;
   image: PhotoKey;
   body: Block[];
 };
 
-const AUTHOR = "Gurpreet Singh";
-
 /** Articles are preserved from aka.org.au (same dates, slugs and wording). */
 export const POSTS: Post[] = [
-  {
+  {  
     slug: "blog-2",
     date: "2025-10-27",
     title: "Meeting at Parliament House to Recognise Sikh ANZAC Legacy",
     excerpt:
       "Representatives of AKA met government leaders at Parliament House, Canberra, to discuss recognising the long-standing service of Australian Sikhs.",
-    author: AUTHOR,
     image: "parliament",
     body: [
       { t: "h", text: "Meeting with Government Leaders to Honour Sikh ANZAC Contributions" },
@@ -46,7 +42,6 @@ export const POSTS: Post[] = [
     title: "Hot Meals, Warm Hearts: Serving the Community with Compassion",
     excerpt:
       "AKA continues to embody the spirit of seva by serving free hot vegetarian meals to the local community.",
-    author: AUTHOR,
     image: "community-meals",
     body: [
       { t: "h", text: "Spreading Kindness Through Seva" },
@@ -77,7 +72,6 @@ export const POSTS: Post[] = [
     title: "Honouring Sikh Contributions at ANZAC Day: A Legacy of Courage and Sacrifice",
     excerpt:
       "The Campbelltown ANZAC Day march along Queen Street to Mawson Park stood as a powerful tribute to the Sikh soldiers who are an integral part of the ANZAC legacy.",
-    author: AUTHOR,
     image: "anzac-group",
     body: [
       { t: "h", text: "Remembering Heroes at Campbelltown ANZAC March" },
@@ -105,7 +99,6 @@ export const POSTS: Post[] = [
     title: "Honouring Sikh Soldiers at ANZAC Day: The Legacy of Private Sarn Singh",
     excerpt:
       "At the East Maitland ANZAC Day march, a special tribute was paid to Sikh soldiers, including Private Sarn (Saran) Singh of the 43rd Infantry Battalion.",
-    author: AUTHOR,
     image: "march-queen-street",
     body: [
       { t: "h", text: "A Tribute to Courage and Diversity" },
@@ -134,7 +127,6 @@ export const POSTS: Post[] = [
     title: "Empowering Education: Australian Khalsa Association Supports Minto Public School",
     excerpt:
       "AKA donated brand-new chairs to the dedicated teachers at Minto Public School, reinforcing its commitment to education and community welfare.",
-    author: AUTHOR,
     image: "minto-school",
     body: [
       { t: "h", text: "Giving Back to the Community Through Education" },
@@ -162,7 +154,6 @@ export const POSTS: Post[] = [
     title: "Honouring Sikh ANZAC Heroes at Mawson Park, Campbelltown",
     excerpt:
       "AKA proudly participated in the ANZAC Day commemorations at Mawson Park, Campbelltown, standing alongside the local community.",
-    author: AUTHOR,
     image: "evening-gathering",
     body: [
       { t: "h", text: "Honouring Sikh ANZAC Legacy at Mawson Park, Campbelltown" },

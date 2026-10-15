@@ -33,7 +33,6 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       title: post.title,
       description: post.excerpt,
       publishedTime: post.date,
-      authors: [post.author],
       images: [{ url: PHOTOS[post.image].src, width: PHOTOS[post.image].w, height: PHOTOS[post.image].h, alt: PHOTOS[post.image].alt }],
     },
     twitter: { card: "summary_large_image", title: post.title, description: post.excerpt },
@@ -54,7 +53,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
-    author: { "@type": "Person", name: post.author },
+    author: { "@type": "Organization", name: SITE.name },
     publisher: { "@type": "Organization", name: SITE.name, logo: { "@type": "ImageObject", url: `${SITE.url}/images/logo.png` } },
     image: `${SITE.url}${PHOTOS[post.image].src}`,
     mainEntityOfPage: `${SITE.url}${postPath(post)}`,
@@ -76,7 +75,7 @@ export default async function PostPage({ params }: { params: Promise<Params> }) 
             </nav>
             <Words as="h1" text={post.title} className="display-lg max-w-[22ch] text-balance" delay={0.1} />
             <Reveal as="p" delay={0.6} className="reveal eyebrow mt-8 text-white/70">
-              <time dateTime={post.date}>{formatDate(post.date)}</time> · By {post.author} · {readingTime(post)} min read
+              <time dateTime={post.date}>{formatDate(post.date)}</time> · {readingTime(post)} min read
             </Reveal>
           </div>
         </header>

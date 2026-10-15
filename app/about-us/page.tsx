@@ -42,8 +42,8 @@ export default function AboutPage() {
 
             <Reveal as="dl" className="reveal mt-14 grid max-w-xl grid-cols-2 gap-8 border-t border-ink/15 pt-10">
               <div>
-                <dt className="eyebrow mb-2 text-primary-deep">Khalsa Help</dt>
-                <dd className="font-display text-5xl font-medium tracking-tight text-ink">1300</dd>
+                <dt className="eyebrow mb-2 text-primary-deep">Helpline</dt>
+                <dd className="font-display text-5xl font-medium tracking-tight text-ink">1300 Khalsa</dd>
               </div>
               <div>
                 <dt className="eyebrow mb-2 text-primary-deep">Charitable Org</dt>

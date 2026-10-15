@@ -34,7 +34,7 @@ export default function BlogPage() {
               <div className="lg:col-span-5">
                 <p className="eyebrow mb-4 text-primary-deep">Latest</p>
                 <p className="eyebrow mb-4 text-muted">
-                  <time dateTime={lead.date}>{formatDate(lead.date)}</time> · {lead.author}
+                  <time dateTime={lead.date}>{formatDate(lead.date)}</time>
                 </p>
                 <h2 className="display-md text-ink transition-colors group-hover:text-primary-deep">{lead.title}</h2>
                 <p className="mt-5 text-muted">{lead.excerpt}</p>

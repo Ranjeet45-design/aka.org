@@ -24,7 +24,7 @@ const Panel = ({ i }: { i: number }) => {
         {String(i + 1).padStart(2, "0")}
       </span>
       <div className="relative">
-        <h3 className="display-md mb-4 text-white">{a.title}</h3>
+        <h3 className="display-md mb-4 md:!text-[38px] text-white">{a.title}</h3>
         <p className="max-w-md text-[0.95rem] leading-relaxed text-white/80 md:text-base">{a.text}</p>
       </div>
     </article>

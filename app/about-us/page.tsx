@@ -42,15 +42,15 @@ export default function AboutPage() {
             </Reveal>
 
            <Reveal as="dl" className="reveal mt-14 max-w-xl gap-8 border-t border-ink/15 pt-10 text-center">
-  <div className="mx-auto text-center">
-    <dt className="eyebrow mb-2 !text-xl font-bold text-primary-deep">Helpline</dt>
-    <dd>
-      <a href={SITE.tollFreeTel} className="font-display text-5xl font-medium tracking-tight text-ink u-link hover:opacity-80">
-        {SITE.tollFree}
-      </a>
-    </dd>
-  </div>
-</Reveal>
+            <div className="mx-auto text-center">
+              <dt className="eyebrow mb-2 !text-xl font-bold text-primary-deep">Helpline</dt>
+              <dd>
+                <a href={SITE.tollFreeTel} className="font-display text-5xl font-medium tracking-tight text-ink u-link hover:opacity-80">
+                  {SITE.tollFree}
+                </a>
+              </dd>
+            </div>
+          </Reveal>
           </div>
 
           <div className="lg:col-span-5">

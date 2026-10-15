@@ -97,6 +97,15 @@ export function Header() {
                 </Link>
               );
             })}
+            {/* <a
+              href={SITE.tollFreeTel}
+              aria-label={`Call toll-free ${SITE.tollFree}`}
+              className={`whitespace-nowrap text-[0.8125rem] font-semibold tracking-[0.08em] transition-colors duration-500 ${
+                light ? "text-white" : "text-ink"
+              }`}
+            >
+              {SITE.tollFree}
+            </a> */}
             <Link
               href="/contact-us/"
               className="btn btn-solid !px-6 !py-3.5 !text-[0.75rem]"
@@ -105,6 +114,15 @@ export function Header() {
             </Link>
           </nav>
 
+          <a
+            href={SITE.tollFreeTel}
+            aria-label={`Call toll-free ${SITE.tollFree}`}
+            className={`relative z-[60] ml-auto mr-3 text-[0.8125rem] font-semibold tracking-[0.06em] whitespace-nowrap transition-colors duration-500 sm:text-sm lg:hidden ${
+              light ? "text-white" : "text-ink"
+            }`}
+          >
+            {SITE.tollFree}
+          </a>
           <button
             type="button"
             className="relative z-[60] -mr-2 flex size-11 flex-col items-center justify-center gap-[7px] lg:hidden"
@@ -209,6 +227,9 @@ export function Header() {
                   className="text-sm text-white/60 pt-4"
                 >
                   <p className="eyebrow mb-2 text-primary">Registered Charity · Australia</p>
+                  <a href={SITE.tollFreeTel} className="u-link mb-1 block text-xl font-semibold text-white">
+                    {SITE.tollFree}
+                  </a>
                   <a href={`mailto:${SITE.email}`} className="u-link text-lg text-white">
                     {SITE.email}
                   </a>

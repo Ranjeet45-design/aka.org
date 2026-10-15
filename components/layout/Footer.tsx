@@ -51,6 +51,11 @@ export function Footer() {
               <h2 className="eyebrow mb-4 text-xs uppercase tracking-wider text-white/50">Contact</h2>
               <ul className="space-y-2.5 text-sm text-white/90">
                 <li>
+                  <a href={SITE.tollFreeTel} className="u-link font-semibold hover:text-white">
+                    {SITE.tollFree}
+                  </a>
+                </li>
+                <li>
                   <a href={`mailto:${SITE.email}`} className="u-link break-all hover:text-white">
                     {SITE.email}
                   </a>

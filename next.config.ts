@@ -14,6 +14,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+        ],
+      },
+      {
         // Originals are only fetched by the image optimizer; let browsers and CDNs keep them.
         source: "/images/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }],

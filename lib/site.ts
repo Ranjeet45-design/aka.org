@@ -3,6 +3,9 @@ export const SITE = {
   shortName: "AKA",
   url: "https://aka.org.au",
   email: "info@aka.org.au",
+  /** Toll-free line. Display text as supplied; the tel href is its keypad equivalent (K5 H4 A2 L5 S7 A2). */
+  tollFree: "1300 KHALSA",
+  tollFreeTel: "tel:1300542572",
   region: "Sydney, NSW",
   scope: "Australia-wide operations",
   tagline: "Serving Humanity, Fostering Unity.",

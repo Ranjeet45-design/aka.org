@@ -11,6 +11,11 @@ export function Footer() {
           {/* Left Column - Compact Layout */}
           <div className="lg:col-span-5"> 
             <div className="mb-6 flex items-center gap-4">
+              <Link
+                  href="/"
+                  aria-label={`${SITE.name} — home`}
+                  className="relative z-[60] flex items-center gap-3"
+                >
               <Image
                 src="/images/logo.png"
                 alt="Logo"
@@ -18,11 +23,13 @@ export function Footer() {
                 height={100}
                 className="h-20 w-20 rounded-full object-cover shadow-xs md:h-24 md:w-24"
               />
+
               <div className="flex flex-col justify-center">
                 <p className="eyebrow text-xs font-semibold uppercase tracking-widest text-primary">
                   Seva · Unity · Service
                 </p>
               </div>
+              </Link>
             </div>
             <p className="max-w-md text-white text-xl md:text-4xl font-medium tracking-[-0.03em] leading-[1.08]">
               Ready to serve alongside us? Every act of seva begins with one person.

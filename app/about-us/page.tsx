@@ -6,6 +6,7 @@ import { LitWords } from "@/components/motion/LitWords";
 import { MissionVision } from "@/components/sections/MissionVision";
 import { Stats } from "@/components/sections/Stats";
 import { VolunteerCTA } from "@/components/sections/VolunteerCTA";
+import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -28,8 +29,8 @@ export default function AboutPage() {
       />
 
       <section className="section-y bg-background">
-        <div className="gutter mx-auto grid max-w-[110rem] gap-16 lg:grid-cols-12">
-          <div className="lg:col-span-7">
+        <div className="gutter mx-auto grid max-w-[110rem] gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="min-w-0 lg:col-span-7">
             <h2 className="sr-only">Our work</h2>
             <LitWords
               className="font-display text-[clamp(1.75rem,3.6vw,3.25rem)] leading-[1.15] font-medium tracking-[-0.03em] text-balance text-ink"
@@ -40,16 +41,16 @@ export default function AboutPage() {
               rooted in the values of selfless service (Seva) and community cohesion.
             </Reveal>
 
-            <Reveal as="dl" className="reveal mt-14 grid max-w-xl grid-cols-2 gap-8 border-t border-ink/15 pt-10">
-              <div>
-                <dt className="eyebrow mb-2 text-primary-deep">Helpline</dt>
-                <dd className="font-display text-5xl font-medium tracking-tight text-ink">1300 Khalsa</dd>
-              </div>
-              <div>
-                <dt className="eyebrow mb-2 text-primary-deep">Charitable Org</dt>
-                <dd className="font-display text-5xl font-medium tracking-tight text-ink">Non-Profit</dd>
-              </div>
-            </Reveal>
+           <Reveal as="dl" className="reveal mt-14 max-w-xl gap-8 border-t border-ink/15 pt-10 text-center">
+  <div className="mx-auto text-center">
+    <dt className="eyebrow mb-2 !text-xl font-bold text-primary-deep">Helpline</dt>
+    <dd>
+      <a href={SITE.tollFreeTel} className="font-display text-5xl font-medium tracking-tight text-ink u-link hover:opacity-80">
+        {SITE.tollFree}
+      </a>
+    </dd>
+  </div>
+</Reveal>
           </div>
 
           <div className="lg:col-span-5">

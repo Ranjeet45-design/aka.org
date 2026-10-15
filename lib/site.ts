@@ -54,7 +54,7 @@ export const AIMS = [
     image: "anzac-group",
   },
   {
-    title: "Langar & Food Security",
+    title: "Langar (Free vegetarian Meal )",
     text: "Upholding the noble tradition of Langar. Providing free, healthy meals to every individual, no matter their background. Serving the local community to ensure that nobody goes hungry.",
     image: "service-crowd",
   },

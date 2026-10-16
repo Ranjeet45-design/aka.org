@@ -70,8 +70,29 @@ export function Footer() {
                 <li>{SITE.region}</li>
                 <li className="text-white/60">{SITE.scope}</li>
               </ul>
-            </div>
 
+              {/* Social Media Links */}
+              <div className="mt-4 flex items-center space-x-6">
+                <a 
+                  href="https://www.facebook.com/p/Australian-Khalsa-Association-Incorporated-61558580174236/"
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label="Facebook"
+                  className="transition-opacity hover:opacity-80"
+                >
+                  <img src="/social-media/facebook.png" alt="Facebook" className="h-10 w-10 object-contain" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/australian_khalsa_association/?hl=en" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label="Instagram"
+                  className="transition-opacity hover:opacity-80"
+                >
+                  <img src="/social-media/instagram.png" alt="Instagram" className="h-10 w-10 object-contain" />
+                </a>
+              </div>
+            </div>
             {/* Our Purpose - Given proper space so text flows naturally */}
             <div>
               <h2 className="eyebrow mb-4 text-xs uppercase tracking-wider text-white/50">Our Purpose</h2>

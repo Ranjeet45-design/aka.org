@@ -6,7 +6,6 @@ import { SITE } from "@/lib/site";
 
 const MAX_BODY = 16 * 1024;
 const MIN_FILL_MS = 2500;
-const EXPECTED_ACTION = { contact: "contact_form", volunteer: "volunteer_form" } as const;
 
 const json = (body: Record<string, unknown>, status = 200, headers: Record<string, string> = {}) =>
   Response.json(body, { status, headers: { "Cache-Control": "no-store", ...headers } });
@@ -31,9 +30,9 @@ function sameOrigin(req: NextRequest) {
   }
 }
 
-type Captcha = { ok: true } | { ok: false; reason: "config" | "unavailable" | "invalid" | "low-score" };
+type Captcha = { ok: true } | { ok: false; reason: "config" | "unavailable" | "invalid" };
 
-async function verifyCaptcha(token: string, ip: string, variant: Variant): Promise<Captcha> {
+async function verifyCaptcha(token: string, ip: string): Promise<Captcha> {
   const secret = process.env.RECAPTCHA_SECRET_KEY;
   if (!secret) return { ok: false, reason: "config" };
   try {
@@ -45,11 +44,8 @@ async function verifyCaptcha(token: string, ip: string, variant: Variant): Promi
       cache: "no-store",
     });
     if (!res.ok) return { ok: false, reason: "unavailable" };
-    const data = (await res.json()) as { success?: boolean; score?: number; action?: string };
-    if (!data.success || data.action !== EXPECTED_ACTION[variant]) return { ok: false, reason: "invalid" };
-    const configured = Number(process.env.RECAPTCHA_MIN_SCORE ?? 0.5);
-    const min = Number.isFinite(configured) ? configured : 0.5;
-    if (typeof data.score !== "number" || data.score < min) return { ok: false, reason: "low-score" };
+    const data = (await res.json()) as { success?: boolean };
+    if (!data.success) return { ok: false, reason: "invalid" };
     return { ok: true };
   } catch {
     return { ok: false, reason: "unavailable" };
@@ -96,7 +92,7 @@ export async function POST(req: NextRequest) {
   const token = typeof raw.captchaToken === "string" ? raw.captchaToken : "";
   if (!token || token.length > 4096)
     return json({ ok: false, error: "Spam check failed. Please reload the page and try again." }, 400);
-  const captcha = await verifyCaptcha(token, ip, variant);
+  const captcha = await verifyCaptcha(token, ip);
   if (!captcha.ok) {
     console.warn(`[contact] captcha rejected: ${captcha.reason}`);
     if (captcha.reason === "config" || captcha.reason === "unavailable")

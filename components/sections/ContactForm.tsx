@@ -7,13 +7,17 @@ declare global {
   interface Window {
     grecaptcha?: {
       ready: (cb: () => void) => void;
-      execute: (siteKey: string, opts: { action: string }) => Promise<string>;
+      render: (
+        container: HTMLElement,
+        opts: { sitekey: string; callback: (token: string) => void; "expired-callback": () => void; "error-callback": () => void },
+      ) => number;
+      reset: (widgetId?: number) => void;
     };
+    onRecaptchaApiLoad?: () => void;
   }
 }
 
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-const ACTION = { contact: "contact_form", volunteer: "volunteer_form" } as const;
 
 type Status = "idle" | "sending" | "success" | "error";
 
@@ -41,26 +45,56 @@ export function ContactForm({ variant }: { variant: Variant }) {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [captchaToken, setCaptchaToken] = useState("");
   const startedAt = useRef(0);
   const formRef = useRef<HTMLFormElement>(null);
+  const widgetContainerRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<number | null>(null);
   const isVolunteer = variant === "volunteer";
 
   useEffect(() => {
     startedAt.current = Date.now();
-    if (!SITE_KEY || window.grecaptcha || document.getElementById("recaptcha-script")) return;
-    const s = document.createElement("script");
-    s.id = "recaptcha-script";
-    s.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(SITE_KEY)}`;
-    s.async = true;
-    document.head.appendChild(s);
+    if (!SITE_KEY) return;
+    let cancelled = false;
+
+    const renderWidget = () => {
+      if (cancelled || widgetIdRef.current !== null || !widgetContainerRef.current || !window.grecaptcha) return;
+      widgetIdRef.current = window.grecaptcha.render(widgetContainerRef.current, {
+        sitekey: SITE_KEY,
+        callback: (token) => setCaptchaToken(token),
+        "expired-callback": () => setCaptchaToken(""),
+        "error-callback": () => setCaptchaToken(""),
+      });
+    };
+
+    const waitForApi = () => {
+      if (cancelled) return;
+      if (window.grecaptcha) {
+        window.grecaptcha.ready(renderWidget);
+      } else {
+        setTimeout(waitForApi, 100);
+      }
+    };
+
+    if (!document.getElementById("recaptcha-script")) {
+      const s = document.createElement("script");
+      s.id = "recaptcha-script";
+      s.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+      s.async = true;
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+    waitForApi();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const getToken = () =>
-    new Promise<string>((resolve, reject) => {
-      if (!SITE_KEY || !window.grecaptcha) return reject(new Error("captcha-unavailable"));
-      const g = window.grecaptcha;
-      g.ready(() => g.execute(SITE_KEY, { action: ACTION[variant] }).then(resolve, reject));
-    });
+  const resetCaptcha = () => {
+    if (widgetIdRef.current !== null && window.grecaptcha) window.grecaptcha.reset(widgetIdRef.current);
+    setCaptchaToken("");
+  };
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -73,16 +107,21 @@ export function ContactForm({ variant }: { variant: Variant }) {
       setMessage("Please correct the highlighted fields.");
       return;
     }
+    if (SITE_KEY && !captchaToken) {
+      setStatus("error");
+      setMessage("Please complete the reCAPTCHA verification.");
+      return;
+    }
     setStatus("sending");
     setMessage("");
     try {
-      const captchaToken = await getToken();
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...check.values, variant, website: data.website, startedAt: startedAt.current, captchaToken }),
       });
       const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; fieldErrors?: FieldErrors };
+      resetCaptcha();
       if (res.ok && body.ok) {
         formRef.current?.reset();
         setErrors({});
@@ -98,8 +137,9 @@ export function ContactForm({ variant }: { variant: Variant }) {
       setStatus("error");
       setMessage(body.error ?? "Something went wrong. Please try again.");
     } catch {
+      resetCaptcha();
       setStatus("error");
-      setMessage("We could not complete the spam check or reach the server. Please reload and try again, or email us directly.");
+      setMessage("We could not reach the server. Please reload and try again, or email us directly.");
     }
   }
 
@@ -140,6 +180,7 @@ export function ContactForm({ variant }: { variant: Variant }) {
       </div>
 
       <div className="flex flex-col gap-4 sm:col-span-2">
+        {SITE_KEY && <div ref={widgetContainerRef} id={`${variant}-recaptcha`} />}
         <button type="submit" disabled={sending} className="btn btn-solid w-fit disabled:cursor-not-allowed disabled:opacity-60">
           <span>{sending ? "Sending…" : isVolunteer ? "Send Volunteer Enquiry" : "Send Message"}</span>
         </button>

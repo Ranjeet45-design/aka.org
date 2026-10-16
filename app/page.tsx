@@ -8,6 +8,7 @@ import { Stats } from "@/components/sections/Stats";
 import { JournalPreview } from "@/components/sections/JournalPreview";
 import { GalleryStrip } from "@/components/sections/GalleryStrip";
 import { VolunteerCTA } from "@/components/sections/VolunteerCTA";
+import { SocialFollow } from "@/components/sections/SocialFollow";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export default function HomePage() {
       <Stats />
       <JournalPreview />
       <GalleryStrip />
+      <SocialFollow />
       <VolunteerCTA />
     </>
   );
